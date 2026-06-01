@@ -1,0 +1,49 @@
+.notification {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  color: white;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  z-index: 2000;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  
+  /* Slide in animation */
+  transform: translateX(120%);
+  animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.notification.success {
+  background-color: var(--color-success);
+  border-left: 4px solid #059669;
+}
+
+.notification.error {
+  background-color: var(--color-danger);
+  border-left: 4px solid #b91c1c;
+}
+
+.notification.info {
+  background-color: var(--color-primary);
+  border-left: 4px solid #4338ca;
+}
+
+@keyframes slideInRight {
+  to {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .notification {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    justify-content: center;
+  }
+}

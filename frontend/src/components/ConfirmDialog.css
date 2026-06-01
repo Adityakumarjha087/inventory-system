@@ -1,0 +1,52 @@
+.confirm-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  padding: 1rem;
+  opacity: 0;
+  animation: modalFadeIn 0.2s forwards;
+}
+
+.confirm-dialog-content {
+  background-color: var(--color-bg-surface);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--color-border);
+  text-align: center;
+  
+  transform: scale(0.95);
+  animation: modalSlideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.confirm-dialog-content h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-text-main);
+  font-weight: 600;
+}
+
+.confirm-dialog-content p {
+  color: var(--color-text-muted);
+  margin-bottom: 1.75rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.confirm-dialog-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Ensure buttons in confirm dialog stretch if needed, or maintain padding */
+.confirm-dialog-actions button {
+  min-width: 100px;
+}
