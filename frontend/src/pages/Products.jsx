@@ -3,6 +3,7 @@ import { getProducts, createProduct, updateProduct, deleteProduct } from '../ser
 import Modal from '../components/Modal';
 import ConfirmDialog from '../components/ConfirmDialog';
 import Notification from '../components/Notification';
+import { IconPlus, IconSearch, IconEdit, IconTrash } from '../components/Icons';
 import './Products.css';
 
 const EMPTY_FORM = { name: '', sku: '', price: '', quantity_in_stock: '' };
@@ -92,10 +93,10 @@ function Products() {
       setSubmitting(true);
       if (editing) {
         await updateProduct(editing.id, payload);
-        setNotification({ message: 'Product updated.', type: 'success' });
+        setNotification({ message: 'Product details updated successfully.', type: 'success' });
       } else {
         await createProduct(payload);
-        setNotification({ message: 'Product created.', type: 'success' });
+        setNotification({ message: 'Product created successfully.', type: 'success' });
       }
       closeModal();
       fetchProducts();
@@ -111,7 +112,7 @@ function Products() {
     if (!confirmDelete) return;
     try {
       await deleteProduct(confirmDelete.id);
-      setNotification({ message: 'Product deleted.', type: 'success' });
+      setNotification({ message: 'Product removed from database.', type: 'success' });
       setConfirmDelete(null);
       fetchProducts();
     } catch (err) {
@@ -126,83 +127,110 @@ function Products() {
   };
 
   return (
-    <div className="products-page">
+    <div className="products-page fade-in-up">
       <div className="page-header">
-        <h1 className="page-title">Products</h1>
-        <button className="btn btn--primary" onClick={openAdd}>Add Product</button>
+        <div className="page-header__left">
+          <h1 className="page-title">Products Directory</h1>
+          <p className="page-subtitle">Add, lookup, edit, or remove products in Syndicate system database.</p>
+        </div>
+        <button className="btn btn--primary" onClick={openAdd}>
+          <IconPlus size={16} />
+          <span>Add Product</span>
+        </button>
       </div>
 
       <div className="search-bar">
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Search products..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="search-bar__input-wrapper">
+          <IconSearch size={16} className="search-bar__icon" />
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search products by name or SKU..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </div>
 
       {loading ? (
-        <div className="page-loading">Loading...</div>
+        <div className="page-loading">Syncing directory inventory...</div>
       ) : products.length === 0 ? (
-        <div className="page-empty">No products found.</div>
+        <div className="page-empty">No products matched search parameters.</div>
       ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>SKU</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((p) => (
-              <tr key={p.id}>
-                <td>{p.name}</td>
-                <td>{p.sku}</td>
-                <td>${parseFloat(p.price).toFixed(2)}</td>
-                <td className={p.quantity_in_stock <= 10 ? 'text-warn' : ''}>
-                  {p.quantity_in_stock}
-                </td>
-                <td className="actions-cell">
-                  <button className="btn btn--secondary btn--sm" onClick={() => openEdit(p)}>Edit</button>
-                  <button className="btn btn--danger btn--sm" onClick={() => setConfirmDelete(p)}>Delete</button>
-                </td>
+        <div className="table-container">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>SKU Code</th>
+                <th>Price Unit</th>
+                <th>Stock Quantity</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {products.map((p) => (
+                <tr key={p.id}>
+                  <td style={{ fontWeight: 600 }}>{p.name}</td>
+                  <td>
+                    <code className="sku-badge">{p.sku}</code>
+                  </td>
+                  <td style={{ fontWeight: 600 }}>${parseFloat(p.price).toFixed(2)}</td>
+                  <td className={p.quantity_in_stock <= 10 ? 'text-warn' : ''} style={{ fontWeight: 500 }}>
+                    {p.quantity_in_stock <= 10 ? (
+                      <span className="low-stock-pill">{p.quantity_in_stock} (Low)</span>
+                    ) : (
+                      <span>{p.quantity_in_stock}</span>
+                    )}
+                  </td>
+                  <td style={{ textAlign: 'right' }}>
+                    <div className="actions-cell">
+                      <button className="btn btn--secondary btn--sm" onClick={() => openEdit(p)}>
+                        <IconEdit size={14} />
+                        <span>Edit</span>
+                      </button>
+                      <button className="btn btn--danger btn--sm" onClick={() => setConfirmDelete(p)}>
+                        <IconTrash size={14} />
+                        <span>Delete</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {showModal && (
-        <Modal title={editing ? 'Edit Product' : 'Add Product'} onClose={closeModal}>
+        <Modal title={editing ? 'Update Product Details' : 'Add Product to Syndicate'} onClose={closeModal}>
           <form onSubmit={handleSubmit} className="form">
             <div className="form-group">
               <label className="form-label" htmlFor="name">Product Name</label>
-              <input id="name" name="name" className="form-input" value={form.name} onChange={handleChange} />
+              <input id="name" name="name" className="form-input" placeholder="e.g. Mechanical Keyboard" value={form.name} onChange={handleChange} />
               {formErrors.name && <span className="form-error">{formErrors.name}</span>}
             </div>
             <div className="form-group">
               <label className="form-label" htmlFor="sku">SKU / Code</label>
-              <input id="sku" name="sku" className="form-input" value={form.sku} onChange={handleChange} />
+              <input id="sku" name="sku" className="form-input" placeholder="e.g. KB-MECH-88" value={form.sku} onChange={handleChange} />
               {formErrors.sku && <span className="form-error">{formErrors.sku}</span>}
             </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="price">Price</label>
-              <input id="price" name="price" type="number" step="0.01" min="0.01" className="form-input" value={form.price} onChange={handleChange} />
-              {formErrors.price && <span className="form-error">{formErrors.price}</span>}
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="quantity_in_stock">Quantity in Stock</label>
-              <input id="quantity_in_stock" name="quantity_in_stock" type="number" min="0" className="form-input" value={form.quantity_in_stock} onChange={handleChange} />
-              {formErrors.quantity_in_stock && <span className="form-error">{formErrors.quantity_in_stock}</span>}
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label" htmlFor="price">Price ($)</label>
+                <input id="price" name="price" type="number" step="0.01" min="0.01" className="form-input" placeholder="0.00" value={form.price} onChange={handleChange} />
+                {formErrors.price && <span className="form-error">{formErrors.price}</span>}
+              </div>
+              <div className="form-group">
+                <label className="form-label" htmlFor="quantity_in_stock">Starting Stock</label>
+                <input id="quantity_in_stock" name="quantity_in_stock" type="number" min="0" className="form-input" placeholder="0" value={form.quantity_in_stock} onChange={handleChange} />
+                {formErrors.quantity_in_stock && <span className="form-error">{formErrors.quantity_in_stock}</span>}
+              </div>
             </div>
             <div className="form-actions">
               <button type="button" className="btn btn--secondary" onClick={closeModal}>Cancel</button>
               <button type="submit" className="btn btn--primary" disabled={submitting}>
-                {submitting ? 'Saving...' : editing ? 'Update' : 'Create'}
+                {submitting ? 'Syncing...' : editing ? 'Save Changes' : 'Create Product'}
               </button>
             </div>
           </form>
@@ -211,7 +239,7 @@ function Products() {
 
       {confirmDelete && (
         <ConfirmDialog
-          message={`Delete product "${confirmDelete.name}"? This cannot be undone.`}
+          message={`Are you sure you want to delete product "${confirmDelete.name}" (${confirmDelete.sku})? This will permanently delete item data and any active relations.`}
           onConfirm={handleDelete}
           onCancel={() => setConfirmDelete(null)}
         />

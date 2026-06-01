@@ -1,2 +1,13 @@
-/* Customers page uses shared styles from Products.css and Dashboard.css */
-/* Additional customer-specific styles if needed go here */
+.customer-email-link {
+  color: var(--color-primary);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  border-bottom: 1px dashed transparent;
+}
+
+.customer-email-link:hover {
+  color: var(--color-primary-hover);
+  border-bottom-color: var(--color-primary-hover);
+}
+
+/* Inherits global page structures from Products.css & index.css */

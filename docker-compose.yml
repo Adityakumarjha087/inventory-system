@@ -1,6 +1,23 @@
 version: "3.8"
 
 services:
+  db:
+    image: postgres:15-slim
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-order_management}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d order_management"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   backend:
     build:
       context: ./backend
@@ -11,6 +28,9 @@ services:
     environment:
       DATABASE_URL: ${DATABASE_URL}
       CORS_ORIGINS: ${CORS_ORIGINS:-*}
+    depends_on:
+      db:
+        condition: service_healthy
 
   frontend:
     build:
