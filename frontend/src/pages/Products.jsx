@@ -171,19 +171,19 @@ function Products() {
             <tbody>
               {products.map((p) => (
                 <tr key={p.id}>
-                  <td style={{ fontWeight: 600 }}>{p.name}</td>
-                  <td>
+                  <td data-label="Product Name" style={{ fontWeight: 600 }}>{p.name}</td>
+                  <td data-label="SKU Code">
                     <code className="sku-badge">{p.sku}</code>
                   </td>
-                  <td style={{ fontWeight: 600 }}>${parseFloat(p.price).toFixed(2)}</td>
-                  <td className={p.quantity_in_stock <= 10 ? 'text-warn' : ''} style={{ fontWeight: 500 }}>
+                  <td data-label="Price Unit" style={{ fontWeight: 600 }}>${parseFloat(p.price).toFixed(2)}</td>
+                  <td data-label="Stock Quantity" className={p.quantity_in_stock <= 10 ? 'text-warn' : ''} style={{ fontWeight: 500 }}>
                     {p.quantity_in_stock <= 10 ? (
                       <span className="low-stock-pill">{p.quantity_in_stock} (Low)</span>
                     ) : (
                       <span>{p.quantity_in_stock}</span>
                     )}
                   </td>
-                  <td style={{ textAlign: 'right' }}>
+                  <td data-label="Actions" style={{ textAlign: 'right' }}>
                     <div className="actions-cell">
                       <button className="btn btn--secondary btn--sm" onClick={() => openEdit(p)}>
                         <IconEdit size={14} />

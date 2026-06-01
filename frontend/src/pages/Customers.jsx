@@ -147,14 +147,14 @@ function Customers() {
             <tbody>
               {customers.map((c) => (
                 <tr key={c.id}>
-                  <td style={{ fontWeight: 600 }}>{c.full_name}</td>
-                  <td>
+                  <td data-label="Customer Name" style={{ fontWeight: 600 }}>{c.full_name}</td>
+                  <td data-label="Email Address">
                     <a href={`mailto:${c.email}`} className="customer-email-link">
                       {c.email}
                     </a>
                   </td>
-                  <td style={{ fontWeight: 500 }}>{c.phone}</td>
-                  <td style={{ textAlign: 'right' }}>
+                  <td data-label="Phone Number" style={{ fontWeight: 500 }}>{c.phone}</td>
+                  <td data-label="Actions" style={{ textAlign: 'right' }}>
                     <button className="btn btn--danger btn--sm" onClick={() => setConfirmDelete(c)}>
                       <IconTrash size={14} />
                       <span>Remove</span>

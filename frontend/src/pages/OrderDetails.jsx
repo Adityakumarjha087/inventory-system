@@ -118,13 +118,13 @@ function OrderDetails() {
             <tbody>
               {order.items.map((item) => (
                 <tr key={item.id}>
-                  <td style={{ fontWeight: 600 }}>{item.product.name}</td>
-                  <td>
+                  <td data-label="Product Description" style={{ fontWeight: 600 }}>{item.product.name}</td>
+                  <td data-label="SKU Code">
                     <code className="sku-badge">{item.product.sku}</code>
                   </td>
-                  <td style={{ textAlign: 'right' }}>${parseFloat(item.unit_price).toFixed(2)}</td>
-                  <td style={{ textAlign: 'center', fontWeight: 600 }}>{item.quantity}</td>
-                  <td style={{ textAlign: 'right', fontWeight: 700 }}>
+                  <td data-label="Unit Price" style={{ textAlign: 'right' }}>${parseFloat(item.unit_price).toFixed(2)}</td>
+                  <td data-label="Quantity" style={{ textAlign: 'center', fontWeight: 600 }}>{item.quantity}</td>
+                  <td data-label="Subtotal Value" style={{ textAlign: 'right', fontWeight: 700 }}>
                     ${parseFloat(item.subtotal).toFixed(2)}
                   </td>
                 </tr>

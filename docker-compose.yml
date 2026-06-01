@@ -1,8 +1,6 @@
-version: "3.8"
-
 services:
   db:
-    image: postgres:15-slim
+    image: postgres:15-alpine
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}

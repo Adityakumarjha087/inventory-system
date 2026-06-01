@@ -189,18 +189,18 @@ function Orders() {
             <tbody>
               {orders.map((o) => (
                 <tr key={o.id}>
-                  <td style={{ fontWeight: 700 }}>
+                  <td data-label="Order ID" style={{ fontWeight: 700 }}>
                     <code className="order-id-badge">#{o.id}</code>
                   </td>
-                  <td style={{ fontWeight: 600 }}>{o.customer_name}</td>
-                  <td>
+                  <td data-label="Customer Client" style={{ fontWeight: 600 }}>{o.customer_name}</td>
+                  <td data-label="Lines">
                     <span className="order-count-badge">{o.item_count} items</span>
                   </td>
-                  <td style={{ fontWeight: 700, color: 'var(--color-primary)' }}>
+                  <td data-label="Total Value" style={{ fontWeight: 700, color: 'var(--color-primary)' }}>
                     ${parseFloat(o.total_amount).toFixed(2)}
                   </td>
-                  <td>{formatDate(o.created_at)}</td>
-                  <td style={{ textAlign: 'right' }}>
+                  <td data-label="Date Dispatched">{formatDate(o.created_at)}</td>
+                  <td data-label="Actions" style={{ textAlign: 'right' }}>
                     <div className="actions-cell">
                       <button className="btn btn--secondary btn--sm" onClick={() => navigate(`/orders/${o.id}`)}>
                         <IconInfo size={14} />
